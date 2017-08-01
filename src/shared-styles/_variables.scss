@@ -1,0 +1,21 @@
+/**
+Colors
+ */
+$client_light_grey: #f9f9f9;
+$client_middle_grey: #f2f2f2;
+$client_dark_grey: #ececec;
+
+$c_gray: #999;
+$c_gray_2: #666;
+$c_gray_light: lighten($c_gray, 25%);
+$c_gray_lightest: lighten($c_gray, 35%);
+$c_gray_mod_back: $client_middle_grey;
+$c_gray_mod_back_light: $client_light_grey;
+$c_gray_mod_back_dark: $client_dark_grey;
+$c_dark: #474747;
+$c_main_1: #008b95;
+$c_main_2: #8cc63f;
+$c_main_3: #eb6900;
+$c_error: #b80e0e;
+$c_nav_1: #4d4d4d;
+$c_footer_1: #d8d8d8;

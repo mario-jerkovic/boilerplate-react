@@ -1,0 +1,35 @@
+@import "../../shared-styles/mixins";
+@import "../../shared-styles/variables";
+
+.tabsContainer {
+  display: flex;
+  flex: 1;
+}
+
+.tab {
+  @include f2_bold;
+
+  color: #8e8e8e;
+  background-color: $client_middle_grey;
+
+  font-size: 1em;
+  line-height: 1;
+
+  padding: .6em .8em;
+  margin-right: 0.5em;
+
+  border-radius: 0.1em;
+
+  cursor: pointer;
+  display: inline-block;
+
+  &.selected {
+    color: $c_dark;
+    background-color: #fff;
+  }
+
+}
+
+.tabContentContainer {
+  background-color: #fff;
+}

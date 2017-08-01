@@ -1,0 +1,75 @@
+@import "../../shared-styles/mixins";
+@import "../../shared-styles/variables";
+
+%buttonBase {
+  display: inline-block;
+
+  cursor: pointer;
+  user-select: none;
+
+  box-sizing: border-box;
+  text-decoration: none;
+
+  padding: 0;
+
+  outline: none;
+
+  @include f2_bold;
+  font-size: 1em;
+
+  position: relative;
+  z-index: 1;
+  height: 2.25em;
+  line-height: 2.25em;
+  min-width: 5.5em;
+
+  overflow: hidden;
+  text-align: center;
+
+  transition: background-color 0.15s ease-in-out;
+}
+
+.button {
+  @extend %buttonBase;
+
+  color: $c_gray;
+  background-color: #fff;
+
+  &.primary {
+    color: #fff;
+    background-color: $c_main_1;
+
+    &:not(.disabled):hover {
+      background-color: lighten($c_main_1, 5%);
+    }
+  }
+
+  &.secondary {
+    color: #fff;
+    background-color: $c_main_2;
+
+    &:not(.disabled):hover {
+      background-color: lighten($c_main_2, 5%);
+    }
+  }
+
+  &.fullWidth {
+    width: 100%;
+  }
+
+  &.disabled {
+    color: $c_dark;
+    background-color: $c_gray;
+
+    cursor: not-allowed;
+  }
+
+  & .label {
+    position: relative;
+
+    padding-left: 1em;
+    padding-right: 1em;
+
+    vertical-align: middle;
+  }
+}

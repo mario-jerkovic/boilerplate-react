@@ -1,0 +1,93 @@
+@import "../../shared-styles/mixins";
+@import "../../shared-styles/variables";
+
+%tableCell {
+  padding: 0.5em;
+  overflow: hidden;
+  white-space: nowrap;
+
+  text-align: left;
+  text-overflow: ellipsis;
+
+  border: 0 solid $client_middle_grey;
+}
+
+.paginationContainer {
+  display: flex;
+  flex: 1;
+  justify-content: flex-end;
+
+  & > [role="button"] {
+    margin-right: 0.5em;
+
+    &:last-of-type {
+      margin-right: 0;
+    }
+  }
+
+    .pageButton {
+    min-width: 2em;
+
+    &:not(.selected):not(.disabled):hover {
+      color: $c_main_1;
+    }
+
+    &.selected {
+      color: #fff;
+      background-color: $c_main_1
+    }
+  }
+}
+
+.table {
+  width: 100%;
+  table-layout: fixed;
+
+  border-spacing: 0.1em;
+  border-collapse: separate;
+}
+
+.tableHeader {
+
+  & .tableHead {
+    height: 2.5em;
+
+    color: $client_light_grey;
+    background-color: $c_main_1;
+
+    & .tableHeaderCell {
+      @include f2_medium;
+      @extend %tableCell;
+
+      font-size: 1em;
+    }
+  }
+}
+
+
+.tableBody {
+
+  & .tableRow {
+    height: 0.8em;
+
+    background-color: $client_light_grey;
+
+    &:hover td {
+      background-color: darken($client_light_grey, 5%);
+    }
+
+    & .tableRowCell {
+      @include f2_light();
+      @extend %tableCell;
+
+      font-size: 1em;
+      background-color: $client_light_grey;
+
+      &.numeric {
+        text-align: right;
+      }
+    }
+  }
+}
+
+

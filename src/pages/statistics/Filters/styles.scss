@@ -1,0 +1,50 @@
+@import "../../../shared-styles/mixins";
+@import "../../../shared-styles/variables";
+
+.filterTypes {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  padding: 2em 0;
+
+  & > div {
+    margin-right: .5em;
+
+    &:last-of-type {
+      margin-right: 0;
+    }
+  }
+
+  & .label {
+    @include f2_bold;
+
+    font-size: 1.2em;
+    line-height: 1.5em;
+    text-transform: uppercase;
+
+    color: $c_dark;
+
+    margin-right: 1em;
+  }
+}
+
+.filterOptions {
+  display: flex;
+
+  & .select {
+    flex: 1;
+    margin-right: .5em;
+
+    &:last-of-type {
+      margin-right: 0;
+    }
+  }
+}
+
+.filterApply {
+  padding: 2em 0 0 0;
+
+  display: flex;
+  justify-content: flex-end;
+}

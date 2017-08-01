@@ -1,0 +1,38 @@
+/**
+Font mixins
+ */
+@mixin f1_strong {
+  font-family: "Museo Slab 700", Georgia, serif;
+  font-weight: normal;
+  font-style: normal;
+}
+
+@mixin f1_light {
+  font-family: "Museo Slab 500", Georgia, serif;
+  font-weight: normal;
+  font-style: normal;
+}
+
+@mixin f2_light {
+  font-family: "Museo Sans 300", Arial, sans-serif;
+  font-weight: normal;
+  font-style: normal;
+}
+
+@mixin f2_medium {
+  font-family: "Museo Sans 500", Arial, sans-serif;
+  font-weight: normal;
+  font-style: normal;
+}
+
+@mixin f2_bold {
+  font-family: "Museo Sans 700", Arial, sans-serif;
+  font-weight: normal;
+  font-style: normal;
+}
+
+@mixin f2_bolder {
+  font-family: "Museo Sans 900", Arial, sans-serif;
+  font-weight: normal;
+  font-style: normal;
+}
