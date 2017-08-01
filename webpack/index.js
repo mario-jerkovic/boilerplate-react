@@ -14,9 +14,7 @@ module.exports = () => {
     if (env === 'production') {
         return merge([
             Common,
-            Parts.base(env, {
-                path: join(__dirname, paths.destination, 'js'),
-            }),
+            Parts.base(env),
             Parts.lintJS({
                 path: join(__dirname, paths.source),
             }),
@@ -27,10 +25,8 @@ module.exports = () => {
      * Development Configuration
      */
     return merge([
+        Parts.base(env),
         Common,
-        Parts.base(env, {
-            path: join(__dirname, paths.destination, 'js'),
-        }),
         Parts.devServer({
             paths: {
                 source: join(__dirname, paths.source),

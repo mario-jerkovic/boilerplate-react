@@ -1,4 +1,4 @@
-/* eslint-disable no-underscore-dangle, global-require */
+/* eslint-disable global-require */
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
@@ -10,7 +10,7 @@ if (document.body) {
 }
 
 function render() {
-    const App = require('./pages/statistics').default;
+    const App = require('./pages/App').default;
 
     ReactDOM.render(
         <AppContainer>
@@ -20,7 +20,7 @@ function render() {
 }
 
 if (module.hot) {
-    module.hot.accept('./pages/statistics', () => {
+    module.hot.accept('./pages/App', () => {
         setImmediate(() => {
             ReactDOM.unmountComponentAtNode(MOUNT_NODE);
             render();

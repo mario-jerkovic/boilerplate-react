@@ -9,11 +9,6 @@ module.exports = {
             join(__dirname, paths.source, 'index.js'),
         ],
     },
-    resolve: {
-        alias: {
-            'gutgemacht-ui': join(__dirname, paths.source, 'components'),
-        },
-    },
     output: {
         path: join(__dirname, paths.destination),
         publicPath: '/',

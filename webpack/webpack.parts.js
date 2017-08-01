@@ -1,10 +1,10 @@
 const { join } = require('path');
 const webpack = require('webpack');
+const AutoDllPlugin = require('autodll-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin');
 
-exports.base = (env, { path }) => {
+exports.base = (env) => {
     if (env === 'production') {
         return {
             devtool: 'source-map',
@@ -28,9 +28,43 @@ exports.base = (env, { path }) => {
         },
         devtool: 'cheap-eval-source-map',
         plugins: [
-            new webpack.DllReferencePlugin({
-                context: process.cwd(),
-                manifest: require(join(path, 'vendor.json')), // eslint-disable-line global-require, import/no-dynamic-require
+            new AutoDllPlugin({
+                inject: true,
+                debug: true,
+                filename: '[name].bundle.js',
+                entry: {
+                    vendor: [
+                        /**
+                         * Project vendor/external dependencies
+                         * @TODO extract it into separate [xx].bundle.js
+                         */
+                        'whatwg-fetch',
+                        'classnames',
+                        'react',
+                        'prop-types',
+                        'react-dom',
+                        'react-hot-loader',
+                        'react-hot-loader/patch.js',
+                        'react-hot-loader/lib/patch.js',
+
+                        /**
+                         * Webpack development runtime dependencies
+                         * @TODO extract it into separate [xx].bundle.js
+                         */
+                        'lodash',
+                        'timers-browserify',
+                        'strip-ansi',
+                        'url',
+                        'sockjs-client',
+                        'style-loader',
+                        'style-loader/lib/addStyles.js',
+                        'css-loader',
+                        'react-proxy',
+                        'html-entities',
+                        'events',
+                        'ansi-html',
+                    ],
+                },
             }),
         ],
     };
@@ -52,10 +86,6 @@ exports.devServer = ({ host, port, paths: { source, destination } }) => ({
         new HtmlWebpackPlugin({
             template: join(source, 'index.html'),
             mobile: true,
-        }),
-        new AddAssetHtmlPlugin({
-            filepath: join(destination, 'js', 'vendor.bundle.js'),
-            includeSourcemap: false,
         }),
     ],
 });

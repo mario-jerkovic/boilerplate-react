@@ -1,16 +1,14 @@
 {
-  "name": "user-backend",
+  "name": "boilerplate-react",
   "version": "1.0.0",
-  "description": "Boilerplate-React",
+  "description": "React,js project boilerplate",
   "main": "src/index.js",
   "scripts": {
     "lint": "eslint src",
     "lint:fix": "eslint src --fix",
     "test": "cross-env NODE_ENV=test mocha --require ./src/test-utils --compilers js:babel-core/register './src/**/*.spec.js'",
     "watch:test": "npm run test -- --watch",
-    "watch:dll": "nodemon package.json --exec \"node webpack/dll-script.js\"",
-    "watch:development": "npm run build:dll && cross-env NODE_ENV=development webpack-dev-server --colors --progress --config webpack",
-    "build:dll": "DEBUG=webpack-dll node webpack/dll-script.js",
+    "watch:development": "cross-env NODE_ENV=development webpack-dev-server --colors --progress --config webpack",
     "build:production": "cross-env NODE_ENV=production webpack -p  --colors --progress --display-error-details --config webpack"
   },
   "author": "Mario Jerković",
@@ -19,7 +17,6 @@
     "babel-eslint": "^7.2.3",
     "chai": "^4.0.2",
     "check-prop-types": "^1.1.0",
-    "debug": "^2.6.8",
     "enzyme": "^2.9.1",
     "eslint": "^3.19.0",
     "eslint-config-airbnb": "^15.0.1",
@@ -34,7 +31,7 @@
     "sinon": "^2.3.7"
   },
   "dependencies": {
-    "add-asset-html-webpack-plugin": "^2.0.1",
+    "autodll-webpack-plugin": "^0.2.1",
     "autoprefixer": "^7.1.2",
     "babel-cli": "^6.24.1",
     "babel-core": "^6.25.0",
@@ -45,7 +42,6 @@
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-1": "^6.24.1",
-    "chart.js": "^2.6.0",
     "classnames": "^2.2.5",
     "cross-env": "^5.0.1",
     "css-loader": "^0.28.4",
@@ -58,7 +54,6 @@
     "postcss-loader": "^2.0.6",
     "prop-types": "^15.5.10",
     "react": "^15.6.1",
-    "react-chartjs-2": "^2.5.3",
     "react-dom": "^15.6.1",
     "react-hot-loader": "^3.0.0-beta.7",
     "sass-loader": "^6.0.6",
