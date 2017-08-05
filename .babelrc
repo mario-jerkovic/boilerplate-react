@@ -9,6 +9,9 @@
     "stage-1",
     "react"
   ],
+  "plugins": [
+    "dual-import"
+  ],
   "env": {
     "test": {
       "presets": [

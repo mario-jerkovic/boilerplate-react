@@ -1,25 +1,22 @@
 const { join } = require('path');
 const webpack = require('webpack');
-const { paths } = require('../config-manifest.json');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-module.exports = {
+const FlashChunkWebpackPlugin = require('./flush-chunk-webpack-plugin');
+
+module.exports = ({ sourcePath }) => ({
     context: process.cwd(),
-    entry: {
-        app: [
-            join(__dirname, paths.source, 'index.js'),
-        ],
-    },
-    output: {
-        path: join(__dirname, paths.destination),
-        publicPath: '/',
-        filename: 'js/[name].bundle.js',
-    },
+    target: 'web',
+    entry: [
+        'babel-polyfill',
+        join(sourcePath, 'index.js'),
+    ],
     module: {
         rules: [
             {
                 test: /\.jsx?$/,
                 include: [
-                    join(__dirname, paths.source),
+                    sourcePath,
                 ],
                 exclude: /node_modules/,
                 use: 'babel-loader',
@@ -28,9 +25,15 @@ module.exports = {
     },
     plugins: [
         new webpack.EnvironmentPlugin(['NODE_ENV']),
+        new webpack.NoEmitOnErrorsPlugin(),
+        new webpack.NamedModulesPlugin(),
         new webpack.ProvidePlugin({
             fetch: 'exports-loader?self.fetch!whatwg-fetch',
         }),
-        new webpack.NamedModulesPlugin(),
+        new HtmlWebpackPlugin({
+            title: 'Boilerplate react',
+            template: join(sourcePath, 'index.html'),
+        }),
+        new FlashChunkWebpackPlugin(),
     ],
-};
+});

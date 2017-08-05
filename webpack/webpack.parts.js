@@ -1,33 +1,59 @@
-const { join } = require('path');
 const webpack = require('webpack');
 const AutoDllPlugin = require('autodll-webpack-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const ExtractCssChunks = require('extract-css-chunks-webpack-plugin');
 
-exports.base = (env) => {
+exports.base = (env, { destinationPath, publicPath }) => {
     if (env === 'production') {
         return {
             devtool: 'source-map',
+            output: {
+                path: destinationPath,
+                publicPath,
+                filename: '[name].[chunkhash].js',
+                chunkFilename: '[name].[chunkhash].js',
+            },
             plugins: [
                 new webpack.optimize.CommonsChunkPlugin({
-                    name: 'vendor',
-                    filename: 'js/[name].bundle.js',
-                    minChunks({ context }) {
-                        return context && context.indexOf('node_modules') >= 0;
-                    },
+                    names: ['bootstrap'],
+                    filename: '[name].[chunkhash].js',
+                    minChunks: Infinity,
                 }),
+                new webpack.optimize.UglifyJsPlugin({
+                    compress: {
+                        screw_ie8: true,
+                        warnings: false,
+                    },
+                    mangle: {
+                        screw_ie8: true,
+                    },
+                    output: {
+                        screw_ie8: true,
+                        comments: false,
+                    },
+                    sourceMap: true,
+                }),
+                new webpack.HashedModuleIdsPlugin(),
             ],
         };
     }
 
     return {
-        entry: {
-            app: [
-                'react-hot-loader/patch',
-            ],
+        entry: [
+            'react-hot-loader/patch',
+        ],
+        output: {
+            path: destinationPath,
+            publicPath,
+            filename: '[name].js',
+            chunkFilename: '[name].js',
         },
         devtool: 'cheap-eval-source-map',
         plugins: [
+            new webpack.optimize.CommonsChunkPlugin({
+                names: ['bootstrap'],
+                filename: '[name].js',
+                minChunks: Infinity,
+            }),
             new AutoDllPlugin({
                 inject: true,
                 debug: true,
@@ -46,11 +72,19 @@ exports.base = (env) => {
                         'react-hot-loader',
                         'react-hot-loader/patch.js',
                         'react-hot-loader/lib/patch.js',
+                        'history',
+                        'redux',
+                        'react-redux',
+                        'redux-first-router',
+                        'redux-first-router-link',
+                        'react-universal-component',
 
                         /**
                          * Webpack development runtime dependencies
                          * @TODO extract it into separate [xx].bundle.js
                          */
+                        'babel-polyfill',
+                        'babel-plugin-universal-import',
                         'lodash',
                         'timers-browserify',
                         'strip-ansi',
@@ -70,32 +104,28 @@ exports.base = (env) => {
     };
 };
 
-exports.devServer = ({ host, port, paths: { source, destination } }) => ({
+exports.devServer = ({ host, port, publicPath, destinationPath }) => ({
     devServer: {
         host,
         port,
+        disableHostCheck: true,
         hot: true,
         inline: true,
         historyApiFallback: true,
-        contentBase: destination,
-        publicPath: '/',
+        contentBase: destinationPath,
+        publicPath,
     },
     plugins: [
         new webpack.HotModuleReplacementPlugin(),
-        new webpack.NoEmitOnErrorsPlugin(),
-        new HtmlWebpackPlugin({
-            template: join(source, 'index.html'),
-            mobile: true,
-        }),
     ],
 });
 
-exports.lintJS = ({ path, options }) => ({
+exports.lintJS = ({ sourcePath, options }) => ({
     module: {
         rules: [
             {
                 test: /\.jsx?$/,
-                include: path,
+                include: sourcePath,
                 exclude: /node_modules/,
                 enforce: 'pre',
                 use: [
@@ -109,76 +139,44 @@ exports.lintJS = ({ path, options }) => ({
     },
 });
 
-exports.SCSS = (env) => {
-    const styleLoaders = [
-        {
-            loader: 'css-loader',
-            options: {
-                modules: true,
-                sourceMap: true,
-                camelCase: true,
-                importLoaders: 1,
-                localIdentName: '[path][name]__[local]___[hash:base64:5]',
-            },
-        },
-        {
-            loader: 'postcss-loader',
-            options: {
-                sourceMap: true,
-                config: {
-                    ctx: {
-                        autoprefixer: {},
-                    },
-                },
-            },
-        },
-        {
-            loader: 'sass-loader',
-            options: {
-                sourceMap: true,
-            },
-        },
-    ];
-
-    if (env === 'production') {
-        return {
-            module: {
-                rules: [
-                    {
-                        test: /\.scss/,
-                        use: ExtractTextPlugin.extract({
-                            fallback: 'style-loader',
-                            use: styleLoaders,
-                        }),
-                    },
-                ],
-            },
-            plugins: [
-                new ExtractTextPlugin({
-                    filename: 'css/style-[name].css',
-                    allChunks: true,
-                }),
-            ],
-        };
-    }
-
-    return {
-        module: {
-            rules: [
-                {
-                    test: /\.scss$/,
-                    exclude: /node_modules/,
+exports.SCSS = () => ({
+    module: {
+        rules: [
+            {
+                test: /\.scss/,
+                use: ExtractCssChunks.extract({
                     use: [
                         {
-                            loader: 'style-loader',
+                            loader: 'css-loader',
                             options: {
-                                sourceMap: true,
+                                modules: true,
+                                camelCase: true,
+                                importLoaders: 1,
+                                localIdentName: '[[name]__[local]--[hash:base64:5]',
                             },
                         },
-                        ...styleLoaders,
+                        {
+                            loader: 'postcss-loader',
+                            options: {
+                                sourceMap: true,
+                                config: {
+                                    ctx: {
+                                        autoprefixer: {},
+                                    },
+                                },
+                            },
+                        },
+                        {
+                            loader: 'sass-loader',
+                        },
                     ],
-                },
-            ],
-        },
-    };
-};
+                }),
+            },
+        ],
+    },
+    plugins: [
+        new ExtractCssChunks({
+            filename: '[name].css',
+        }),
+    ],
+});

@@ -3,40 +3,51 @@ const merge = require('webpack-merge');
 
 const Common = require('./webpack.config');
 const Parts = require('./webpack.parts');
-const { paths, devServer } = require('../config-manifest.json');
 
 module.exports = () => {
     const env = process.env.NODE_ENV || 'development';
+
+    const sourcePath = join(process.cwd(), 'src');
+    const destinationPath = join(process.cwd(), 'public');
+
+    const publicPath = '/';
+    const devServerHost = 'localhost';
+    const devServerPort = 3000;
 
     /**
      * Production Configuration
      */
     if (env === 'production') {
         return merge([
-            Common,
-            Parts.base(env),
+            Common({ sourcePath }),
+            Parts.base(env, {
+                publicPath,
+                destinationPath,
+            }),
             Parts.lintJS({
-                path: join(__dirname, paths.source),
+                path: sourcePath,
             }),
             Parts.SCSS(env),
         ]);
     }
+
     /**
      * Development Configuration
      */
     return merge([
-        Parts.base(env),
-        Common,
+        Parts.base(env, {
+            publicPath,
+            destinationPath,
+        }),
+        Common({ sourcePath }),
         Parts.devServer({
-            paths: {
-                source: join(__dirname, paths.source),
-                destination: join(__dirname, paths.destination),
-            },
-            host: devServer.host,
-            port: devServer.port,
+            publicPath,
+            destinationPath,
+            host: devServerHost,
+            port: devServerPort,
         }),
         Parts.lintJS({
-            path: join(__dirname, paths.source),
+            sourcePath,
             options: {
                 emitWarning: true,
             },
