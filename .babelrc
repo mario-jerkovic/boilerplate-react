@@ -10,7 +10,7 @@
     "react"
   ],
   "plugins": [
-    "dual-import"
+    "universal-import"
   ],
   "env": {
     "test": {

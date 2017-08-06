@@ -77,7 +77,6 @@ exports.base = (env, { destinationPath, publicPath }) => {
                         'react-redux',
                         'redux-first-router',
                         'redux-first-router-link',
-                        'react-universal-component',
 
                         /**
                          * Webpack development runtime dependencies

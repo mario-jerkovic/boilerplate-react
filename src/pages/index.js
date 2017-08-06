@@ -27,3 +27,28 @@ export default ({ page }) => { // eslint-disable-line react/prop-types
         </div>
     );
 };
+
+// import React from 'react';
+// import universal from 'react-universal-component';
+//
+// const routes = {
+//     DASHBOARD: 'DashboardPage',
+//     PROFILE: 'ProfilePage',
+//     REVIEWS: 'ReviewsPage',
+//     NOTIFICATIONS: 'NotificationsPage',
+// };
+//
+// const UniversalComponent = universal(({ Component }) => import(`./${Component}/index.js`), {
+//     minDelay: 500,
+//     error: () => <div>Not Found</div>,
+// });
+//
+// export default ({ page }) => { // eslint-disable-line react/prop-types
+//     const Component = routes[page];
+//
+//     return (
+//         <div>
+//             <UniversalComponent Component={Component} />
+//         </div>
+//     );
+// };
