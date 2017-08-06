@@ -19,7 +19,7 @@ module.exports = () => {
      */
     if (env === 'production') {
         return merge([
-            Common({ sourcePath }),
+            Common(env, { sourcePath }),
             Parts.base(env, {
                 publicPath,
                 destinationPath,
@@ -39,7 +39,7 @@ module.exports = () => {
             publicPath,
             destinationPath,
         }),
-        Common({ sourcePath }),
+        Common(env, { sourcePath }),
         Parts.devServer({
             publicPath,
             destinationPath,

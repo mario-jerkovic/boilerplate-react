@@ -1,10 +1,9 @@
 const { join } = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const FlushCSSChunksWebpackPlugin = require('flush-css-chunks-webpack-plugin');
 
-const FlashChunkWebpackPlugin = require('./flush-chunk-webpack-plugin');
-
-module.exports = ({ sourcePath }) => ({
+module.exports = (env, { sourcePath }) => ({
     context: process.cwd(),
     target: 'web',
     entry: [
@@ -34,6 +33,8 @@ module.exports = ({ sourcePath }) => ({
             title: 'Boilerplate react',
             template: join(sourcePath, 'index.html'),
         }),
-        new FlashChunkWebpackPlugin(),
+        new FlushCSSChunksWebpackPlugin({
+            entryOnly: env === 'production',
+        }),
     ],
 });
