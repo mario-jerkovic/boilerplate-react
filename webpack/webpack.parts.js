@@ -2,20 +2,24 @@ const webpack = require('webpack');
 const AutoDllPlugin = require('autodll-webpack-plugin');
 const ExtractCssChunks = require('extract-css-chunks-webpack-plugin');
 
-exports.base = (env, { destinationPath, publicPath }) => {
-    if (env === 'production') {
+const Config = require('./config');
+
+const { paths, devServer } = Config;
+
+exports.base = () => {
+    if (Config.env === 'production') {
         return {
             devtool: 'source-map',
             output: {
-                path: destinationPath,
-                publicPath,
-                filename: '[name].[chunkhash].js',
-                chunkFilename: '[name].[chunkhash].js',
+                path: paths.destination,
+                publicPath: devServer.publicPath,
+                filename: 'js/[name].[chunkhash].js',
+                chunkFilename: 'js/[name].[chunkhash].js',
             },
             plugins: [
                 new webpack.optimize.CommonsChunkPlugin({
                     names: ['bootstrap'],
-                    filename: '[name].[chunkhash].js',
+                    filename: 'js/[name].[chunkhash].js',
                     minChunks: Infinity,
                 }),
                 new webpack.optimize.UglifyJsPlugin({
@@ -42,16 +46,16 @@ exports.base = (env, { destinationPath, publicPath }) => {
             'react-hot-loader/patch',
         ],
         output: {
-            path: destinationPath,
-            publicPath,
-            filename: '[name].js',
-            chunkFilename: '[name].js',
+            path: paths.destination,
+            publicPath: devServer.publicPath,
+            filename: 'js/[name].js',
+            chunkFilename: 'js/[name].js',
         },
         devtool: 'cheap-eval-source-map',
         plugins: [
             new webpack.optimize.CommonsChunkPlugin({
                 names: ['bootstrap'],
-                filename: '[name].js',
+                filename: 'js/[name].js',
                 minChunks: Infinity,
             }),
             new AutoDllPlugin({
@@ -75,8 +79,7 @@ exports.base = (env, { destinationPath, publicPath }) => {
                         'history',
                         'redux',
                         'react-redux',
-                        'redux-first-router',
-                        'redux-first-router-link',
+                        'react-router-dom',
 
                         /**
                          * Webpack development runtime dependencies
@@ -103,28 +106,28 @@ exports.base = (env, { destinationPath, publicPath }) => {
     };
 };
 
-exports.devServer = ({ host, port, publicPath, destinationPath }) => ({
+exports.devServer = () => ({
     devServer: {
-        host,
-        port,
+        host: devServer.host,
+        port: devServer.port,
         disableHostCheck: true,
         hot: true,
         inline: true,
         historyApiFallback: true,
-        contentBase: destinationPath,
-        publicPath,
+        contentBase: paths.destination,
+        publicPath: devServer.publicPath,
     },
     plugins: [
         new webpack.HotModuleReplacementPlugin(),
     ],
 });
 
-exports.lintJS = ({ sourcePath, options }) => ({
+exports.lintJS = (options = {}) => ({
     module: {
         rules: [
             {
                 test: /\.jsx?$/,
-                include: sourcePath,
+                include: paths.source,
                 exclude: /node_modules/,
                 enforce: 'pre',
                 use: [
@@ -175,7 +178,7 @@ exports.SCSS = () => ({
     },
     plugins: [
         new ExtractCssChunks({
-            filename: '[name].css',
+            filename: 'css/[name].css',
         }),
     ],
 });

@@ -3,19 +3,23 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const FlushCSSChunksWebpackPlugin = require('flush-css-chunks-webpack-plugin');
 
-module.exports = (env, { sourcePath }) => ({
+const Config = require('./config');
+
+const { paths } = Config;
+
+module.exports = {
     context: process.cwd(),
     target: 'web',
     entry: [
         'babel-polyfill',
-        join(sourcePath, 'index.js'),
+        join(paths.source, 'index.js'),
     ],
     module: {
         rules: [
             {
                 test: /\.jsx?$/,
                 include: [
-                    sourcePath,
+                    paths.source,
                 ],
                 exclude: /node_modules/,
                 use: 'babel-loader',
@@ -31,10 +35,10 @@ module.exports = (env, { sourcePath }) => ({
         }),
         new HtmlWebpackPlugin({
             title: 'Boilerplate react',
-            template: join(sourcePath, 'index.html'),
+            template: join(paths.source, 'index.html'),
         }),
         new FlushCSSChunksWebpackPlugin({
-            entryOnly: env === 'production',
+            entryOnly: Config.env === 'production',
         }),
     ],
-});
+};

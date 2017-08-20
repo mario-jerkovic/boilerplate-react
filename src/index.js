@@ -3,12 +3,12 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { AppContainer } from 'react-hot-loader';
-import createHistory from 'history/createBrowserHistory';
+import { BrowserRouter } from 'react-router-dom';
 
-import configureStore from './store';
-import Application from './pages/Application';
+import App from './views/layout/App';
+import configureStore from './redux/create';
 
-const store = configureStore(createHistory(), window.REDUX_STATE);
+const store = configureStore(window.REDUX_STATE);
 
 const MOUNT_NODE = document.createElement('div');
 
@@ -20,20 +20,20 @@ function render(Component) {
     ReactDOM.render(
         <AppContainer>
             <Provider store={store}>
-                <Component />
+                <BrowserRouter>
+                    <Component />
+                </BrowserRouter>
             </Provider>
         </AppContainer>
         , MOUNT_NODE);
 }
 
 if (module.hot) {
-    module.hot.accept('./pages/Application', () => {
+    module.hot.accept('./views/layout/App/index.js', () => {
         setImmediate(() => {
-            const App = require('./pages/Application').default;
-            render(App);
+            render(require('./views/layout/App/index.js').default);
         });
     });
 }
 
-render(Application);
-
+render(App);
