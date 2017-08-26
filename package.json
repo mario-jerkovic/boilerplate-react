@@ -1,13 +1,13 @@
 {
   "name": "boilerplate-react",
   "version": "1.0.0",
-  "description": "React,js project boilerplate",
+  "description": "React.js project boilerplate",
   "main": "src/index.js",
   "scripts": {
     "lint": "eslint src",
     "lint:fix": "eslint src --fix",
     "watch:development": "cross-env NODE_ENV=development webpack-dev-server --colors --progress --config webpack",
-    "build:production": "cross-env NODE_ENV=production webpack -p  --colors --progress --display-error-details --config webpack"
+    "build:production": "cross-env NODE_ENV=production webpack -p --colors --progress --display-error-details --config webpack"
   },
   "author": "Mario Jerković",
   "license": "MIT",
