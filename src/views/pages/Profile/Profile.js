@@ -1,13 +1,10 @@
 import React from 'react';
-
 import styles from './styles.scss';
 
-function Reviews() {
+export default function Profile() {
     return (
         <div className={styles.container}>
-            Reviews
+            Profile
         </div>
     );
 }
-
-export default Reviews;

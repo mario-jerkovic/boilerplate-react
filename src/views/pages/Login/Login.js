@@ -2,12 +2,10 @@ import React from 'react';
 
 import styles from './styles.scss';
 
-function NotFound() {
+export default function Login() {
     return (
         <div className={styles.container}>
-            NotFound
+            Login Page
         </div>
     );
 }
-
-export default NotFound;

@@ -14,6 +14,11 @@ module.exports = {
         'babel-polyfill',
         join(paths.source, 'index.js'),
     ],
+    resolve: {
+        alias: {
+            'redux-modules': join(paths.source, 'redux', 'modules'),
+        },
+    },
     module: {
         rules: [
             {
@@ -30,8 +35,10 @@ module.exports = {
         new webpack.EnvironmentPlugin(['NODE_ENV']),
         new webpack.NoEmitOnErrorsPlugin(),
         new webpack.NamedModulesPlugin(),
-        new webpack.ProvidePlugin({
-            fetch: 'exports-loader?self.fetch!whatwg-fetch',
+        new webpack.optimize.CommonsChunkPlugin({
+            names: ['bootstrap'],
+            filename: 'js/[name].js',
+            minChunks: Infinity,
         }),
         new HtmlWebpackPlugin({
             title: 'Boilerplate react',

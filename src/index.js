@@ -3,9 +3,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { AppContainer } from 'react-hot-loader';
-import { BrowserRouter } from 'react-router-dom';
+import { Router, browserHistory } from 'react-router';
 
-import App from './views/layout/App';
 import configureStore from './redux/create';
 
 const store = configureStore(window.REDUX_STATE);
@@ -16,24 +15,29 @@ if (document.body) {
     document.body.appendChild(MOUNT_NODE);
 }
 
-function render(Component) {
+function render() {
+    const routes = require('./routes').default(store);
+
     ReactDOM.render(
         <AppContainer>
             <Provider store={store}>
-                <BrowserRouter>
-                    <Component />
-                </BrowserRouter>
+                <Router history={browserHistory}>
+                    {routes}
+                </Router>
             </Provider>
         </AppContainer>
         , MOUNT_NODE);
 }
 
 if (module.hot) {
-    module.hot.accept('./views/layout/App/index.js', () => {
+    module.hot.accept([
+        './routes',
+    ], () => {
         setImmediate(() => {
-            render(require('./views/layout/App/index.js').default);
+            ReactDOM.unmountComponentAtNode(MOUNT_NODE);
+            render();
         });
     });
 }
 
-render(App);
+render();

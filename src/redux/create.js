@@ -3,11 +3,15 @@ import {
     compose,
     createStore,
     combineReducers,
+    applyMiddleware,
 } from 'redux';
+import thunkMiddleware from 'redux-thunk';
 
-import * as reducers from './ducks';
+import * as reducers from './modules';
 
 export default function configureStore(preLoadedState = {}) {
+    const enhancers = [];
+    const middleware = [thunkMiddleware];
     let composeEnhancers = compose;
 
     if (process.env.NODE_ENV !== 'production') {
@@ -19,6 +23,9 @@ export default function configureStore(preLoadedState = {}) {
     return createStore(
         combineReducers(reducers),
         preLoadedState,
-        composeEnhancers(),
+        composeEnhancers(
+            applyMiddleware(...middleware),
+            ...enhancers,
+        ),
     );
 }

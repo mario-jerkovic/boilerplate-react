@@ -2,12 +2,10 @@ import React from 'react';
 
 import styles from './styles.scss';
 
-function Dashboard() {
+export default function Reviews() {
     return (
         <div className={styles.container}>
-            Dashboard
+            Reviews
         </div>
     );
 }
-
-export default Dashboard;

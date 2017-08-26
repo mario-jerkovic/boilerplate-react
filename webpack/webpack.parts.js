@@ -17,11 +17,6 @@ exports.base = () => {
                 chunkFilename: 'js/[name].[chunkhash].js',
             },
             plugins: [
-                new webpack.optimize.CommonsChunkPlugin({
-                    names: ['bootstrap'],
-                    filename: 'js/[name].[chunkhash].js',
-                    minChunks: Infinity,
-                }),
                 new webpack.optimize.UglifyJsPlugin({
                     compress: {
                         screw_ie8: true,
@@ -53,11 +48,6 @@ exports.base = () => {
         },
         devtool: 'cheap-eval-source-map',
         plugins: [
-            new webpack.optimize.CommonsChunkPlugin({
-                names: ['bootstrap'],
-                filename: 'js/[name].js',
-                minChunks: Infinity,
-            }),
             new AutoDllPlugin({
                 inject: true,
                 debug: true,
@@ -79,7 +69,8 @@ exports.base = () => {
                         'history',
                         'redux',
                         'react-redux',
-                        'react-router-dom',
+                        'redux-thunk',
+                        'react-router',
 
                         /**
                          * Webpack development runtime dependencies
@@ -154,7 +145,7 @@ exports.SCSS = () => ({
                                 modules: true,
                                 camelCase: true,
                                 importLoaders: 1,
-                                localIdentName: '[[name]__[local]--[hash:base64:5]',
+                                localIdentName: '[name]__[local]--[hash:base64:5]',
                             },
                         },
                         {

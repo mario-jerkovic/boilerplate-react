@@ -2,12 +2,10 @@ import React from 'react';
 
 import styles from './styles.scss';
 
-function Profile() {
+export default function NotFound() {
     return (
         <div className={styles.container}>
-            Profile
+            NotFound
         </div>
     );
 }
-
-export default Profile;
