@@ -32,7 +32,7 @@ export default () => {
      * Keep routes in alphabetical order
      */
     return (
-        <Route path="/" component={App} >
+        <Route path="/" component={App}>
             {/* Home (main) route */}
             <IndexRoute component={Dashboard} />
 
@@ -47,6 +47,6 @@ export default () => {
 
             {/* Catch all route */}
             <Route path="*" component={NotFound} status={404} />
-        </Route >
+        </Route>
     );
 };
